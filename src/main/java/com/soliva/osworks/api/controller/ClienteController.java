@@ -3,6 +3,8 @@ package com.soliva.osworks.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,7 @@ public class ClienteController {
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
-	@GetMapping("/clientes")
+	@GetMapping
 	public List<Cliente> listar() {
 		return clienteRepository.findAll();
 	}
@@ -43,12 +45,12 @@ public class ClienteController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente adicionar( @RequestBody Cliente cliente) {
+	public Cliente adicionar( @Valid @RequestBody Cliente cliente) {
 		return clienteRepository.save(cliente);
 	}
 	
 	@PutMapping("/{clienteId}")
-	public ResponseEntity<Cliente> atualizar(@PathVariable("clienteId") Long clienteId, @RequestBody Cliente cliente) {
+	public ResponseEntity<Cliente> atualizar( @Valid @PathVariable("clienteId") Long clienteId, @RequestBody Cliente cliente) {
 		
 		if( !clienteRepository.existsById(clienteId) ) {
 			return ResponseEntity.notFound().build();
